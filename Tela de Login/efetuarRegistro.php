@@ -4,6 +4,10 @@
     $senha = htmlspecialchars($_POST['senha'], ENT_QUOTES);
     $senhaCripto = password_hash($senha, PASSWORD_DEFAULT);
 
+    if($email == '' || $senha == ''){
+        echo "<script>alert('Preencha os campos');</script>";
+        header("Refresh: 0 ; telaDeRegistro.php");
+    }
     //Criar conexão
     $connect = new mysqli('localhost', 'root', '', 'cadastro');
     
@@ -11,26 +15,29 @@
     if($connect->connect_error) {
         die("Falha na conexão: ".$connect->connect_error);
     }
-    
-    $query_select = "SELECT email FROM usuarios WHERE email = '$email'";
-    $select = $connect->query($query_select);
-    if($select-> num_rows > 0) {
-        echo "<script>alert('Esse email já existe');</script>";
-        header("Refresh: 0 ; telaDeRegistro.php");
-        die();
-        
-    } else {
-        $query = "INSERT INTO usuarios (email, senha) VALUE ('$email', '$senhaCripto')";
-        if($email == '' || $senha == '') {
-            echo "<script>alert('Preencha todos os campos!');</script>";
-            header("Refresh: 0 ; telaDeRegistro.php");
-        } else if($connect->query($query) === TRUE) {
-            echo "<script>alert('Usuário cadastrado com sucesso!'); 
-            window.location.href='telaInicial.php';</script>";
+     //Verificar se existe esse email
+     $verificar = $connect->prepare("SELECT email FROM usuarios WHERE email = ?");
+     $verificar->bind_param('s', $email);
+     $verificar->execute();
+     $verificar->store_result();
+     if($verificar->num_rows > 0){
+         echo "<script>alert('Esse email já existe');</script>";
+         header("Refresh: 0 ; telaDeRegistro.php");
+         die();
+     } else {
+        $inserir = $connect->prepare("INSERT INTO usuarios (email, senha) VALUES (?, ?)");
+        $inserir->bind_param("ss", $email, $senhaCripto);
+        $inserir->execute();
+
+        if ($inserir->num_rows === 0) {
+            echo "<script>alert('Email cadastrado com sucesso');
+            window.location.href='telaInicial.php'</script>";
+            exit;
         } else {
-            echo "<script>alert('Não foi possível cadastrar esse usuário');</script>";
-            header("Refresh: 0 ; telaDeRegistro");
+            echo "<script>Não foi possível cadastrar email</script>";
+            header("Refresh: 0; telaDeRegistro.php");
+            exit;
         }
     }
-
+    $connect->close();
 ?>
