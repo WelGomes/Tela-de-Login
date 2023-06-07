@@ -1,7 +1,7 @@
 <?php
     //Recebendo dados do formulário
    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-   $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+   $senha = $_POST['senha'];
 
    //Conectar ao banco de dados
    $connect = new mysqli('localhost', 'root', '','cadastro');
@@ -11,39 +11,39 @@
    }
 
    //Consultar o banco de dados e verificar se o email é existente
-   $verificar = $connect->prepare("SELECT * FROM usuarios WHERE email = ? AND senha = ?");
-   $verificar->bind_param("ss", $email, $senha);
+   $verificar = $connect->prepare("SELECT * FROM usuarios WHERE email = ?");
+   $verificar->bind_param('s', $email);
    $verificar->execute();
    $verificar->store_result();
-
+   
+   //Vai conferir se o email existe
    if($verificar->num_rows > 0){
-        $verificar->bind_result($id, $email, $senhaArmazenada);
+        //Se existir, ele vai armazenar o email e senha
+        $verificar->bind_result($id, $emailArmazenado, $senhaArmazenada);
         $verificar->fetch();
-
+        //Vai conferir a senha
         if(password_verify($senha, $senhaArmazenada)){
-            //Verificar se a checkbox "Salvar dados" está marcada
+            //Caso o "Salvar dados" esteja marcado
             if(isset($_POST['salvar'])){
-                setcookie('email', $email, time() + (86400 * 30), '/'); //Cookie válido por 30 dias
+                setcookie('email', $emailArmazenado, time() + (86400 * 30), '/'); //Cookie vai durar por 30 dias
             } else {
-                //Remove o cookie existente se houver
+                //Caso o "Salva dados" esteja desmarcado
                 if(isset($_COOKIE['email'])){
                     setcookie('email', '', time() - 3600, '/');
                 }
             }
-            echo "<script>alert('Você logou!');</script>";
-            header("Location: home.php");
+            echo "<script>alert('Você logou');
+            window.location.href='home.php'</script>";
             exit;
         } else {
-            echo "<script>alert('ERRO! Email ou senha incorreta');</script>";
+            echo "<script>alert('Senha incorreta!');</script>";
             header("Refresh: 0 ; telaInicial.php");
             exit;
         }
     } else {
-        echo "<script>alert('ERRO! Email ou senha incorreta');</script>";
-        header("Refresh: 0 ; telainicial.php");
+        echo "<script>alert('Email incorreto!');</script>";
+        header("Refresh: 0 ; telaInicial.php");
         exit;
-   }
-
-   //Fechar conexão com o banco de dados
-   $connect->close();
+    }
+    $connect->close();
 ?>
