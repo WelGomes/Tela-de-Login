@@ -1,3 +1,4 @@
+<?php include "todoResultado.php";?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -5,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="styleToDo.css">
+    <link rel="stylesheet" href="styletodo.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <title>To - do List</title>
 </head>
@@ -22,13 +23,13 @@
                 </svg>
               </div>
             </div>
-            <form action="todo.php" method="post">
+            <form action="todoAdicionar.php" method="post">
               <div class="row">
                 <div class="col-sm-9">
-                    <input class="form-control form-control-lg border-success" type="text" placeholder="Informe a tarefa" aria-label=".form-control-lg example" name="tarefa" id="tarefa">
+                    <input class="form-control form-control-lg border-success" type="text" placeholder="Informe a tarefa" aria-label=".form-control-lg example" name="tarefas" id="tarefas">
                 </div>
                 <div class="col mb-5">
-                    <button type="button" class="btn btn-outline-success" name="adicionar" id="adicionar">
+                    <button type="submit" class="btn btn-outline-success" name="adicionar" id="adicionar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                         </svg>
@@ -36,6 +37,13 @@
                 </div>
               </div>
             </form>
+            <div class="row">
+              <div class="col-sm-9">
+                <ul>
+                  <?php echo $listaDeTarefas;?>
+                </ul>
+              </div>
+            </div>          
           </div>
         </div>
       </div>
