@@ -1,7 +1,7 @@
 <?php
     $connect = new mysqli("localhost", "root", "", "todo");
     if($connect->connect_error){
-        echo "Falha ao conectar com o banco de dados";
+        die("Falha ao conectar com o banco de dados". $connect->connect_error);
     }
     $result = $connect->query("SELECT * FROM lista");
     $listaDeTarefas = "";
