@@ -1,6 +1,3 @@
-<?php include "todoConcluir.php";?>
-<?php include "todoExcluir.php";?>
-
 <?php
     $connect = new mysqli("localhost", "root", "", "todo");
     if($connect->connect_error){
