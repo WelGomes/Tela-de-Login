@@ -5,13 +5,16 @@
     }
 
     if(isset($_POST['concluir'])){
-        $concluir = $connect->prepare("UPDATE lista SET concluir = 1 WHERE concluir  = 0");
+        $id = $_POST['concluir'];
+        $concluir = $connect->prepare("UPDATE lista SET concluir = 1 WHERE id = ?");
+        $concluir->bind_param("i", $id);
         $concluir->execute();
-        header("Location: home.php");
-        if ($_POST['concluir'] == 1) {
-            $id = $_POST['tarefa'];
-            echo "<span style='color: red;'>". $id. "</span>";
+        $linhasAfetadas = $concluir->affected_rows;
+        if($linhasAfetadas > 0){
+            $cor = "green";
+            echo "<span style='color: " . $cor . "'>" . $id . "</span>";
         }
+        header("Location: home.php");
     }
 
     if(isset($_POST['excluir'])){
@@ -21,6 +24,7 @@
         $excluir->execute();
         header("Location: home.php");
     }
+
 
     
 ?>
