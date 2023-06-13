@@ -44,7 +44,7 @@
                       if($connect->connect_error){
                         die("Falha ao conectar com o banco de dados". $connect->connect_error);
                       }
-
+                      //teste
                       $result = $connect->query("SELECT * FROM lista");
 
                       while($row = $result->fetch_assoc()){ ?>
