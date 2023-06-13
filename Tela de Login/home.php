@@ -1,4 +1,3 @@
-<?php include "todoResultado.php";?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="styletodo.css">
+    <link rel="stylesheet" href="styleToDo.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <title>To - do List</title>
 </head>
@@ -38,12 +37,28 @@
               </div>
             </form>
             <div class="row">
-              <div class="col-sm-9">
-                <ul>
-                  <?php echo $listaDeTarefas;?>
-                </ul>
+              <div class="col">
+                <table>
+                     <?php
+                      $connect = new mysqli("localhost", "root", "", "todo");
+                      if($connect->connect_error){
+                        die("Falha ao conectar com o banco de dados". $connect->connect_error);
+                      }
+
+                      $result = $connect->query("SELECT * FROM lista");
+
+                      while($row = $result->fetch_assoc()){ ?>
+                        <tr><td><?php echo $row['tarefa']; ?></td><td>
+                        <form action="todoBotoes.php" method="post">
+                          <button type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
+                          <button type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>
+                        </form>
+                      <?php
+                      }
+                      ?>
+                </table>
               </div>
-            </div>          
+            </div>
           </div>
         </div>
       </div>
