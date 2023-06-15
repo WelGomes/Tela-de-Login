@@ -48,7 +48,7 @@
                       $result = $connect->query("SELECT * FROM lista");
 
                       while($row = $result->fetch_assoc()){ ?>
-                        <tr><td><?php echo $row['tarefa']; ?></td><td>
+                        <tr><td style="color: <?php echo $row['concluir'] == 0 ? 'black' : 'red'?>"><?php echo $row['tarefa']; ?></td><td>
                         <form action="todoBotoes.php" method="post">
                           <button type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
                           <button type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>

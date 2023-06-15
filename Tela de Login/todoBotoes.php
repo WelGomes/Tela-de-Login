@@ -6,14 +6,26 @@
 
     if(isset($_POST['concluir'])){
         $id = $_POST['concluir'];
-        $concluir = $connect->prepare("UPDATE lista SET concluir = 1 WHERE id = ?");
-        $concluir->bind_param("i", $id);
-        $concluir->execute();
-        $linhasAfetadas = $concluir->affected_rows;
-        if($linhasAfetadas > 0){
-            $cor = "green";
-            echo "<span style='color: " . $cor . "'>" . $id . "</span>";
+        
+        $tarefaClicada = $connect->prepare("SELECT * FROM lista WHERE id = ?");
+        $tarefaClicada->bind_param("i", $id);
+        $tarefaClicada->execute();
+        
+        $result = $tarefaClicada->get_result();
+
+        $concluirValor = 0;
+        
+        foreach($result as $row){
+            $concluirValor = $row['concluir'];
         }
+
+        $concluir = $connect->prepare("UPDATE lista SET concluir = ? WHERE id = ?");
+        $novoValorConcluir = $concluirValor == 0 ? 1 : 0;
+        $concluir->bind_param("ii", $novoValorConcluir, $id);
+        $concluir->execute();
+
+        $linhasAfetadas = $concluir->affected_rows;
+
         header("Location: home.php");
     }
 
