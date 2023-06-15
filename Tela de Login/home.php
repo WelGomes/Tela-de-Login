@@ -22,18 +22,17 @@
     <title>To - do List</title>
 </head>
 <body>
-        <nav class="navbar navbar-expand-lg bg-black">
-          <div class="col-11">
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <form class="d-flex" role="search" action="finalizarSessao.php" method="post">
-                <button class="btn btn-outline-danger" type="submit" title="Finalizar sessão">X</button>
-              </form>
-            </li>
-          </ul>
-        </div>
+      <nav class="navbar navbar-expand-lg bg-black">
+        <div class="col-11">
+            <ul class="nav justify-content-end">
+              <li class="nav-item">
+                <form class="d-flex" role="search" action="finalizarSessao.php" method="post">
+                  <button class="btn btn-outline-danger" type="submit" title="Finalizar sessão">X</button>
+                </form>
+              </li>
+            </ul>
+          </div>
         </nav>
-        
 
       <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
@@ -52,7 +51,7 @@
                 <div class="col-sm-9">
                     <input class="form-control form-control-lg border-success" type="text" placeholder="Informe a tarefa" aria-label=".form-control-lg example" name="tarefas" id="tarefas">
                 </div>
-                <div class="col mb-5">
+                <div class="col mb-4">
                     <button type="submit" class="btn btn-outline-success" name="adicionar" id="adicionar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -63,7 +62,7 @@
             </form>
             <div class="container text-center">
               <div class="row align-items-center">
-                <table class= 'col'>
+                <table class= 'col mb-3'>
                      <?php
                       include("conectarBancoDeDadosToDo.php");
                   
@@ -73,7 +72,7 @@
                         <tr><td class="h5" style= "color: <?php echo $row['concluir'] == 0 ? 'black' : 'green'?>"><?php echo $row['tarefa']; ?></td><td>
                         <form action="todoBotoes.php" method="post">
                           <button class="btn btn-outline-success" type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
-                          <button class="btn btn-outline-danger" type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>
+                          <button class="btn btn-outline-danger " type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>
                         </form>
                       <?php
                       }
