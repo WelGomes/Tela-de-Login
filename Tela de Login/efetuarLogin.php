@@ -1,14 +1,10 @@
 <?php
+    //Conectar ao banco de dados e verificar conexão
+    include("conectarBancoDeDadosLoginECadastro.php");
+
     //Recebendo dados do formulário
    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
    $senha = $_POST['senha'];
-
-   //Conectar ao banco de dados
-   $connect = new mysqli('localhost', 'root', '','cadastro');
-   //Verificar conexão
-   if($connect->connect_error){
-        die("Falha na conexão". $connect_error);
-   }
 
    //Consultar o banco de dados e verificar se o email é existente
    $verificar = $connect->prepare("SELECT * FROM usuarios WHERE email = ?");
@@ -32,6 +28,12 @@
                     setcookie('email', '', time() - 3600, '/');
                 }
             }
+            session_start();
+            $_SESSION['logged_in'] = true;
+            $_SESSION['email'] = $email;
+            header("Location: home.php");
+            exit;
+            
             echo "<script>alert('Você logou');
             window.location.href='home.php'</script>";
             exit;

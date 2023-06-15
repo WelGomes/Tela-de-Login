@@ -1,3 +1,15 @@
+<?php
+  session_start();
+
+  // Verifica se a variável de sessão está definida e se o usuário está logado
+  if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+      // Redireciona o usuário para a página de login ou exibe uma mensagem de erro
+      header("Location: telaInicial.php");
+      exit;
+  }
+
+  // Restante do código da página protegida aqui
+?> 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,6 +22,19 @@
     <title>To - do List</title>
 </head>
 <body>
+        <nav class="navbar navbar-expand-lg bg-black">
+          <div class="col-11">
+          <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <form class="d-flex" role="search" action="finalizarSessao.php" method="post">
+                <button class="btn btn-outline-danger" type="submit" title="Finalizar sessão">X</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        </nav>
+        
+
       <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
           <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 border border-success bg-light">
@@ -36,22 +61,19 @@
                 </div>
               </div>
             </form>
-            <div class="row">
-              <div class="col">
-                <table>
+            <div class="container text-center">
+              <div class="row align-items-center">
+                <table class= 'col'>
                      <?php
-                      $connect = new mysqli("localhost", "root", "", "todo");
-                      if($connect->connect_error){
-                        die("Falha ao conectar com o banco de dados". $connect->connect_error);
-                      }
+                      include("conectarBancoDeDadosToDo.php");
                   
                       $result = $connect->query("SELECT * FROM lista");
 
                       while($row = $result->fetch_assoc()){ ?>
-                        <tr><td style="color: <?php echo $row['concluir'] == 0 ? 'black' : 'red'?>"><?php echo $row['tarefa']; ?></td><td>
+                        <tr><td class="h5" style= "color: <?php echo $row['concluir'] == 0 ? 'black' : 'green'?>"><?php echo $row['tarefa']; ?></td><td>
                         <form action="todoBotoes.php" method="post">
-                          <button type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
-                          <button type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>
+                          <button class="btn btn-outline-success" type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
+                          <button class="btn btn-outline-danger" type="submit" name='excluir' value='<?php echo $row['id'];?>'>Excluir</button>
                         </form>
                       <?php
                       }

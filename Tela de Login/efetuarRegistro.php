@@ -1,4 +1,6 @@
 <?php
+    //Conectar ao banco de dados e verificar conexão
+    include("conectarBancoDeDadosLoginECadastro.php");
 
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $senha = htmlspecialchars($_POST['senha'], ENT_QUOTES);
@@ -8,13 +10,7 @@
         echo "<script>alert('Preencha os campos');</script>";
         header("Refresh: 0 ; telaDeRegistro.php");
     }
-    //Criar conexão
-    $connect = new mysqli('localhost', 'root', '', 'cadastro');
-    
-    //Verificar a conexão
-    if($connect->connect_error) {
-        die("Falha na conexão: ".$connect->connect_error);
-    }
+
      //Verificar se existe esse email
      $verificar = $connect->prepare("SELECT email FROM usuarios WHERE email = ?");
      $verificar->bind_param('s', $email);
