@@ -7,7 +7,7 @@
    $senha = $_POST['senha'];
 
    //Consultar o banco de dados e verificar se o email é existente
-   $verificar = $connect->prepare("SELECT * FROM usuarios WHERE email = ?");
+   $verificar = $connect->prepare("SELECT id, email, senha FROM usuarios WHERE email = ?");
    $verificar->bind_param('s', $email);
    $verificar->execute();
    $verificar->store_result();
