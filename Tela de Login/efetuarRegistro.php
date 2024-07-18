@@ -26,12 +26,12 @@
         $inserir->execute();
 
         if ($inserir->num_rows === 0) {
-            echo "<script>alert('Email cadastrado com sucesso');
-            window.location.href='telaInicial.php'</script>";
-            exit;
-        } else {
             echo "<script>Não foi possível cadastrar email</script>";
             header("Refresh: 0; telaDeRegistro.php");
+            exit;
+        } else {
+            echo "<script>alert('Email cadastrado com sucesso');
+            window.location.href='telaInicial.php'</script>";
             exit;
         }
     }
