@@ -5,7 +5,7 @@
     if(isset($_POST['concluir'])){
         $id = $_POST['concluir'];
         
-        $tarefaClicada = $connect->prepare("SELECT * FROM lista WHERE id = ?");
+        $tarefaClicada = $connect->prepare("SELECT id FROM lista WHERE id = ?");
         $tarefaClicada->bind_param("i", $id);
         $tarefaClicada->execute();
         
