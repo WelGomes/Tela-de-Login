@@ -3,10 +3,10 @@
     include("conectarBancoDeDadosLoginECadastro.php");
 
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $senha = htmlspecialchars($_POST['senha'], ENT_QUOTES);
+    $senha = $_POST['senha'];
     $senhaCripto = password_hash($senha, PASSWORD_DEFAULT);
 
-    if($email == '' || $senha == ''){
+    if(empty($email) || empty($senha)){
         echo "<script>alert('Preencha os campos');</script>";
         header("Refresh: 0 ; telaDeRegistro.php");
     }
