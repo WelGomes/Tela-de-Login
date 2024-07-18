@@ -65,10 +65,12 @@
                 <table class= 'col mb-3'>
                      <?php
                       include("conectarBancoDeDadosToDo.php");
-                  
-                      $result = $connect->query("SELECT * FROM lista");
 
+                      // Executa uma consulta SQL para selecionar todas as linhas da tabela 'lista'
+                      $result = $connect->query("SELECT * FROM lista");
+                      // Loop através de cada linha retornada pela consulta
                       while($row = $result->fetch_assoc()){ ?>
+                        <!--Define a cor do texto como verde se a tarefa estiver concluída, ou preta se não estiver-->         
                         <tr><td class="h5" style= "color: <?php echo $row['concluir'] == 0 ? 'black' : 'green'?>"><?php echo $row['tarefa']; ?></td><td>
                         <form action="todoBotoes.php" method="post">
                           <button class="btn btn-outline-success" type="submit" name='concluir' value='<?php echo $row['id'];?>'>Concluir</button>
